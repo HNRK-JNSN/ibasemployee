@@ -8,16 +8,8 @@ namespace IBASEmployeeService.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly ILogger<EmployeeController> _logger;
-        public EmployeeController(ILogger<EmployeeController> logger)
-        {
-            _logger = logger;
-        }
 
-
-        [HttpGet("GetEmployees")]
-        public IEnumerable<Employee> Get()
-        {
-            var employees = new List<Employee>() {
+        private readonly List<Employee> _employees = new List<Employee>() {
             new Employee() {
                 Id = "21",
                 Name = "Mette Bangsbo",
@@ -46,7 +38,24 @@ namespace IBASEmployeeService.Controllers
                 }
             }
         };
-            return employees;
+
+
+        public EmployeeController(ILogger<EmployeeController> logger)
+        {
+            _logger = logger;
+        }
+
+
+        [HttpGet("GetEmployees")]
+        public IEnumerable<Employee> Get()
+        {
+            return _employees;
+        }
+
+        [HttpGet("Department/{departmentId}")]
+        public IEnumerable<Employee> GetByDepartment(int departmentId)
+        {
+            return _employees.Where(e => e.Department.Id == departmentId);
         }
     }
 
